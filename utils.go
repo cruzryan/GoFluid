@@ -2,6 +2,8 @@ package main
 
 import (
 	"math"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 func floor(val float32) float32 {
@@ -112,26 +114,52 @@ func advect(b int, d []float32, d0 []float32, velocX []float32, velocY []float32
 //To stop it from coliding with itself
 func set_bnd(b int, x []float32) {
 
-	//Nozzle Border
-	for l := 0; l < 1000; l++ {
-		if l < (N / 2) { //Remove Scale
+	for i := 0; i < 100; i++ {
+		if i < (N / 5) { //Remove Scale
 
-			ln := int32(math.Log(float64(l)) * 15)
+			ln := int32(math.Log(float64(i)) * 3)
 			half := (int32(N) / int32(2)) //REMOVE SCALE
+			fluid.addDensity(i-30, int(ln+half), 0)
+			fluid.addDensity(i-30, int(-ln+half), 0)
+			rl.DrawCircle(int32(i)*int32(SCALE), int32(ln+half)*int32(SCALE), 5, rl.Red)
+			rl.DrawCircle(int32(i)*int32(SCALE), int32(-ln+half)*int32(SCALE), 5, rl.Red)
 
-			y := int(ln + half)
-			y2 := int(-ln + half)
-
-			if b == 1 {
-				x[IX(0, y)] = -x[IX(1, y)]
-				x[IX(0, y2)] = -x[IX(1, y2)]
-			} else {
-				x[IX(0, y)] = -x[IX(1, y)]
-				x[IX(0, y2)] = -x[IX(1, y2)]
+			if b == 2 {
+				x[IX(i, int(ln+half))] = -x[IX(i, int(ln+half))]
+				x[IX(i, int(-ln+half))] = -x[IX(i, int(-ln+half))]
 			}
-			return
+
 		}
 	}
+
+	// //Nozzle Border
+	// for l := 0; l < N; l++ {
+
+	// 	if l < (N / 2) { //Remove Scale
+
+	// 		ln := int32(math.Log(float64(l)) * 10)
+	// 		half := (int32(N) / int32(2)) //REMOVE SCALE
+
+	// 		y := int(ln + half)
+	// 		y2 := int(-ln + half)
+
+	// 		fluid.addDensity(l, y, 100)
+	// 		fluid.addDensity(l, y2, 100)
+
+	// 		x[IX(l, y)] = -4 * x[IX(l, y)]
+	// 		x[IX(l, y2)] = -4 * x[IX(l, y2)]
+
+	// 		// if b == 1 {
+	// 		// 	x[IX(l, y)] = -4 * x[IX(l, y)]
+	// 		// 	x[IX(l, y2)] = -4 * x[IX(l, y2)]
+	// 		// } else {
+	// 		// 	x[IX(l, y)] = -4 * x[IX(l, y)]
+	// 		// 	x[IX(l, y2)] = -4 * x[IX(l, y2)]
+	// 		// }
+
+	// 		return
+	// 	}
+	// }
 
 	for i := 1; i < N-1; i++ {
 

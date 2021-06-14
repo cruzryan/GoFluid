@@ -113,7 +113,7 @@ func (f *Fluid) renderD() {
 			// fmt.Println("ALPHA:", alpha)
 			// alpha := uint8(255)
 			// fmt.Println("X: ", x, "Y: ", y)
-			if d == 1 || d == 0 {
+			if d < 1 {
 				rl.DrawRectangle(int32(x), int32(y), int32(SCALE), int32(SCALE), rl.NewColor(0, 0, 0, 255))
 			} else {
 
